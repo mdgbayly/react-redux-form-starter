@@ -1,0 +1,8 @@
+{
+	"use": ["autoprefixer"],
+	"input": "./dist/app.css",
+	"output": "./dist/app.css",
+	"autoprefixer": {
+		"browsers": "Last 4 versions, Firefox ESR, IE >= 10, Safari >= 6"
+	}
+}

@@ -1,0 +1,15 @@
+language: node_js
+node_js:
+- '0.12'
+before_install:
+- mv .npmrc.travis .npmrc
+before_script:
+- export NODE_ENV=production
+- export DISPLAY=:99.0
+- sh -e /etc/init.d/xvfb start
+- echo $TRAVIS_TAG
+sudo: false
+after_success:
+- echo $TRAVIS_TAG
+- echo $TRAVIS_SECURE_ENV_VARS
+- npm run report-coverage
