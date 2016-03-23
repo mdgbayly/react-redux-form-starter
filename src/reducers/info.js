@@ -1,7 +1,8 @@
 import { modeled } from 'react-redux-form';
 
 const initialState = {
-	phones: []
+	phones: [],
+	colors: []
 };
 
 export default function info(state = initialState, action) {

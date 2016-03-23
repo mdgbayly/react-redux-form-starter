@@ -1,34 +1,19 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Field, actions } from 'react-redux-form';
-import _ from 'lodash';
+import { Field, actions, createFieldClass } from 'react-redux-form';
 
-// import { fieldsResetValidity } from '../reducers/fieldHelpers';
+import CustomInput from './CustomInput';
+
+const CustomField = createFieldClass({
+	CustomInput: (props) => ({
+		...props,
+		defaultValue: props.modelValue,
+		name: props.model,
+		value: props.modelValue
+	})
+});
 
 export class InfoForm extends React.Component {
-
-	constructor(props) {
-		super(props);
-		this.state = {
-			ariaAlert: null,
-			ariaAlertId: _.uniqueId('qed-alert-')
-		};
-	}
-
-	raiseAlert(alert) {
-		this.setState({
-			ariaAlert: alert,
-			ariaAlertId: _.uniqueId('qed-alert-')
-		});
-	}
-
-	handleSubmit(e) {
-		e.preventDefault();
-	}
-
-	handleClickCancel(e) {
-		e.preventDefault();
-	}
 
 	render() {
 		const { info, dispatch } = this.props;
@@ -37,14 +22,10 @@ export class InfoForm extends React.Component {
 			<div>
 				<h1 id="main">Main</h1>
 
-				<div className="qed-offscreen" aria-atomic="true" role="alert">
-					{this.state.ariaAlert && <p key={this.state.ariaAlertId}>{this.state.ariaAlert}</p>}
-				</div>
-
 				<form>
 					<h2>Deep Forms</h2>
 
-					<label htmlFor="">Phones</label>
+					<label htmlFor="">Phones (Uncontrolled - remove breaks?)</label>
 
 					<ul>
 						{ info.phones.map((phone, i) =>
@@ -61,6 +42,28 @@ export class InfoForm extends React.Component {
 
 					<button type="button" onClick={() => dispatch(actions.push('info.phones', null))}>
 						Add Phone
+					</button>
+
+					<br/>
+					<br/>
+
+					<label htmlFor="">Colors (Controlled - remove works)</label>
+
+					<ul>
+						{ info.colors.map((color, i) =>
+							<li key={i}>
+								<CustomField model={`info.colors[${i}]`} key={i}>
+									<CustomInput type="text" />
+								</CustomField>
+								<button type="button" onClick={() => dispatch(actions.remove('info.colors', i))}>
+									X
+								</button>
+							</li>
+						)}
+					</ul>
+
+					<button type="button" onClick={() => dispatch(actions.push('info.colors', null))}>
+						Add Color
 					</button>
 
 				</form>
